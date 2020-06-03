@@ -10,9 +10,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import pages.LoginPage;
 import pages.AddressPage;
 import pages.YourAddressPage;
-import pages.CheckedAddressPage;
 import java.util.concurrent.TimeUnit;
-import static org.junit.Assert.assertEquals;
+
 
 public class CreateAddressSteps {
     private WebDriver driver;
@@ -20,7 +19,13 @@ public class CreateAddressSteps {
     private LoginPage loginPage;
     private AddressPage addressPage;
     private YourAddressPage yourAddressPage;
-    private CheckedAddressPage checkedAddressPage;
+    private String alias;
+    private String city;
+    private String postCode;
+    private String country;
+    private String phone;
+    private String address;
+
 
 
     @Given("^User is logged in to the shop$")
@@ -50,32 +55,59 @@ public class CreateAddressSteps {
         AddressPage addressPage = new AddressPage(driver);
 
         addressPage.setAliasInput(alias);
+        this.alias = alias;
+
         addressPage.setAddress(address);
+        this.address = address;
+
         addressPage.setPostCodeInput(postCode);
+        this.postCode = postCode;
+
         addressPage.setCityInput(city);
+        this.city = city;
+
         addressPage.roleDropCountry(country);
+        this.country = country;
+
         addressPage.setPhoneInput(phone);
-
-
-        Assert.assertEquals("Arya",addressPage.getAddress());
-        Assert.assertEquals("Zamkowa 3",addressPage.getAddress());
-        Assert.assertEquals("99-999", addressPage.getPostCode());
-        Assert.assertEquals("Winterfell",addressPage.getCity());
-        Assert.assertEquals("United Kingdom",addressPage.getCountry());
-        Assert.assertEquals("+66661661661",addressPage.getPhone());
-
-
+        this.phone = phone;
 
         addressPage.clickSaveButton();
+
+
+        addressPage.checkTiles();
+        String acctualText = addressPage.getCheckTiles();
+        Assert.assertTrue(acctualText.contains("Arrya Stark"));
+        Assert.assertTrue(acctualText.contains(this.alias));
+
+
+        addressPage.setUpdateButton();
     }
 
-    @Then("^User can see \"([^\"]*)\" information$")
-    public void userCanSeeInformation(String expectedMessage) {
-        String successMessage = checkedAddressPage.getSuccessMessage();
-        Assert.assertEquals(expectedMessage,successMessage);
+    @Then("^User check field$")
+    public void userCheckField() {
+        AddressPage addressPage = new AddressPage(driver);
+
+        Assert.assertEquals(this.alias, addressPage.getAlias());
+        System.out.println("Alias field pass");
+        Assert.assertEquals(this.address, addressPage.getAddress());
+        System.out.println("Address field pass");
+        Assert.assertEquals(this.postCode, addressPage.getPostCode());
+        System.out.println("Post Code field pass");
+        Assert.assertEquals(this.city, addressPage.getCity());
+        System.out.println("City field pass");
+        Assert.assertEquals(this.country, addressPage.getCountry());
+        System.out.println("Country field pass");
+        Assert.assertEquals(this.phone, addressPage.getPhone());
+
+
 
     }
 }
+
+
+
+
 
 
 

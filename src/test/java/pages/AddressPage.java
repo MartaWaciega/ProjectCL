@@ -6,6 +6,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+
 public class AddressPage {
     private WebDriver driver;
 
@@ -35,12 +37,28 @@ public class AddressPage {
     @FindBy(css = ".btn.btn-primary.float-xs-right")
     private WebElement saveButton;
 
+
+
+
+    @FindBy(xpath = "//article")
+    private List<WebElement> blockList;
+
+
+
+
+
+    @FindBy(xpath = "/html/body/main/section/div/div/section/section/div[1]/article/div[2]/a[1]")
+    private WebElement updateButton;
+
+
+
     public void setAliasInput(String alias) {
         aliasInput.click();
         aliasInput.clear();
         aliasInput.sendKeys(alias);
 
     }
+
 
     public void setAddress(String address) {
         addressInput.click();
@@ -76,25 +94,48 @@ public class AddressPage {
 
     public void clickSaveButton() {
         saveButton.click();
+    }
+    public void setUpdateButton(){
+        updateButton.click();
 
     }
-        public String getAliasC() {
-        return aliasInput.getText();
+
+
+
+
+        public void checkTiles () {
+        WebElement tilesCheck = blockList.get(blockList.size() - 1);
+        System.out.println(tilesCheck.getText());
+    }
+        public String getCheckTiles(){
+        WebElement tiles = blockList.get(blockList.size() - 1);
+        return tiles.getText();
+    }
+
+
+
+
+
+
+
+        public String getAlias() {
+        return aliasInput.getAttribute("value");
     }
         public String getAddress() {
-        return addressInput.getText();
+        return addressInput.getAttribute("value");
     }
         public String getCity() {
-        return cityInput.getText();
+        return cityInput.getAttribute("value");
     }
         public String getPostCode() {
-        return postCodeInput.getText();
+        return postCodeInput.getAttribute("value");
     }
         public String getCountry() {
-        return roleDropCountry.getText();
+        Select drop = new Select(roleDropCountry);
+        return drop.getFirstSelectedOption().getText();
     }
         public String getPhone() {
-        return phoneInput.getText();
+        return phoneInput.getAttribute("value");
     }
 
 }
