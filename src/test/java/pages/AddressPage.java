@@ -103,7 +103,7 @@ public class AddressPage {
 
 
 
-        public void checkTiles () {
+    public void checkTiles () {
         WebElement tilesCheck = blockList.get(blockList.size() - 1);
         System.out.println(tilesCheck.getText());
     }
